@@ -56,6 +56,9 @@
     </services:webx-configuration>
 
     <!-- 设置request/response/session。 -->
+    <!-- 标准RequestContext 对象模板
+        Request Contexts:负责访问和修改request和response，但不负责改变应用执行的流程
+        Pipeline：提供应用执行的流程，但不关心request和response-->
     <services:request-contexts xmlns="http://www.alibaba.com/schema/services/request-contexts">
         <rewrite>
         	<rule pattern=".*\.htm">
@@ -93,6 +96,7 @@
     <services:upload sizeMax="5M" />
 
     <!-- 将beans暴露给模板。这里定义的tools可被所有components之间共享。 -->
+    <!-- 通过pulltool 进行页面输出内容的控制，组织页面的展示，或者是直接取得web层相关的一些对象 -->
     <services:pull xmlns="http://www.alibaba.com/schema/services/pull/factories">
         <utils />
         <page-tool />
@@ -106,7 +110,8 @@
     
     <services:form/>
 
-    <!-- 装载模块。 -->
+    <!-- 装载模块。
+        制定获取数据的JAVA处理模块 -->
     <services:module-loader>
         <ml-factories:class-modules>
             <ml-factories:search-packages type="$1" packages="com.alibaba.dubbo.governance.web.common.module.*" />

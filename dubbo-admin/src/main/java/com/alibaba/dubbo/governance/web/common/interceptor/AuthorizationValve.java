@@ -91,13 +91,13 @@ public class AuthorizationValve extends AbstractValve {
                     }
                 }
             }
-            if (user == null || user.getUsername() == null || user.getUsername().length() == 0) {
-                showLoginForm();
-                pipelineContext.breakPipeline(1);
+            if (user == null || user.getUsername() == null || user.getUsername().length() == 0) {//用户登录不成功
+                showLoginForm();//显示登录框
+                pipelineContext.breakPipeline(1);//中断上一级 pipeLine
             }
-            if (user != null && StringUtils.isNotEmpty(user.getUsername())) {
-                request.getSession().setAttribute(WebConstants.CURRENT_USER_KEY, user);
-                pipelineContext.invokeNext();
+            if (user != null && StringUtils.isNotEmpty(user.getUsername())) {//用户登录成功
+                request.getSession().setAttribute(WebConstants.CURRENT_USER_KEY, user);//session中加入当前登录用户信息
+                pipelineContext.invokeNext();//调用后续value
             }
         }else{
             pipelineContext.invokeNext();
@@ -134,25 +134,25 @@ public class AuthorizationValve extends AbstractValve {
     }
     
     private User loginByBase(String authorization) {
-        authorization = Coder.decodeBase64(authorization);
+        authorization = Coder.decodeBase64(authorization);//登录用户解码
         int i = authorization.indexOf(':');
-        String username = authorization.substring(0, i);
+        String username = authorization.substring(0, i);//获得用户名
         if (username != null && username.length() > 0) {
-            String password = authorization.substring(i + 1);
+            String password = authorization.substring(i + 1);//存在用户的情况下，获得密码
             if (password != null && password.length() > 0) {
-                String passwordDigest = Coder.encodeMd5(username + ":" + REALM + ":" + password);
-                User user = getUser(username);
+                String passwordDigest = Coder.encodeMd5(username + ":" + REALM + ":" + password);//加密密码字段
+                User user = getUser(username);//根据登录的用户名获得用户对象信息
                 if (user != null) {
                     String pwd = user.getPassword();
                     if (pwd != null && pwd.length() > 0) {
-                        if (passwordDigest.equals(pwd)) {
+                        if (passwordDigest.equals(pwd)) {//比较密码
                             return user;
                         }
                     }
                 }
             }
         }
-        return null;
+        return null;//密码匹配的情况下，返回当前用户信息，否则返回null
     }
 
     private User loginByDigest(String value) throws IOException {

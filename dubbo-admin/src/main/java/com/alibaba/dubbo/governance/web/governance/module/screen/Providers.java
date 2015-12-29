@@ -73,7 +73,12 @@ public class Providers extends Restful {
     
     @Autowired
     private HttpServletRequest request;
-    
+
+	/**
+	 * 显示提供者
+	 * @param provider
+	 * @param context
+     */
     public void index(Provider provider, Map<String, Object> context) {
         String service = (String) context.get("service");
         String application = (String) context.get("application");
@@ -119,6 +124,7 @@ public class Providers extends Restful {
      * @param context
      * @param value
      */
+	//*
     private void setSearchHistroy(Map<String, Object> context, String value) {
     	//分析已有的cookie
     	String separatorsB = "\\.\\.\\.\\.\\.\\.";
@@ -147,6 +153,7 @@ public class Providers extends Restful {
         response.addCookie(_cookie); // 写入客户端硬盘
 	}
 
+	//*
 	public void show(Long id, Map<String, Object> context) {
         Provider provider = providerService.findProvider(id);
         if (provider != null && provider.isDynamic()) {
@@ -180,10 +187,21 @@ public class Providers extends Restful {
 		}
     }
 
+	/**
+	 * 编辑
+	 * @param id
+	 * @param context
+     */
     public void edit(Long id, Map<String, Object> context) {
     	show(id, context);
     }
 
+	/**
+	 * 新建
+	 * @param provider
+	 * @param context
+     * @return
+     */
     public boolean create(Provider provider, Map<String, Object> context) {
         String service = provider.getService();
         if (!super.currentUser.hasServicePrivilege(service)) {
@@ -205,6 +223,12 @@ public class Providers extends Restful {
         return true;
     }
 
+	/**
+	 * 更新
+	 * @param newProvider
+	 * @param context
+     * @return
+     */
     public boolean update(Provider newProvider, Map<String, Object> context) {
     	Long id = newProvider.getId();
     	String parameters = newProvider.getParameters();
@@ -257,6 +281,12 @@ public class Providers extends Restful {
         return true;
     }
 
+	/**
+	 * 批量删除
+	 * @param ids
+	 * @param context
+     * @return
+     */
     public boolean delete(Long[] ids, Map<String, Object> context) {
 		for (Long id : ids) {
 			Provider provider = providerService.findProvider(id);
@@ -276,7 +306,13 @@ public class Providers extends Restful {
 		}
 		return true;
     }
-    
+
+    /**
+	 * 批量启用
+	 * @param ids
+	 * @param context
+	 * @return
+     */
     public boolean enable(Long[] ids, Map<String, Object> context) {
 		Map<Long, Provider> id2Provider = new HashMap<Long, Provider>();
 		for (Long id : ids) {
@@ -295,7 +331,13 @@ public class Providers extends Restful {
 		}
 		return true;
     }
-    
+
+    /**
+	 * 批量禁用
+	 * @param ids
+	 * @param context
+	 * @return
+     */
     public boolean disable(Long[] ids, Map<String, Object> context) {
 		for (Long id : ids) {
 			Provider provider = providerService.findProvider(id);
@@ -312,7 +354,13 @@ public class Providers extends Restful {
 		}
 		return true;
     }
-    
+
+    /**
+	 * 批量倍权
+	 * @param ids
+	 * @param context
+	 * @return
+     */
     public boolean doubling(Long[] ids, Map<String, Object> context) {
     	for (Long id : ids) {
 			Provider provider = providerService.findProvider(id);
@@ -329,7 +377,13 @@ public class Providers extends Restful {
 		}
     	return true;
     }
-    
+
+    /**
+	 * 批量半权
+	 * @param ids
+	 * @param context
+	 * @return
+     */
     public boolean halving(Long[] ids, Map<String, Object> context) {
     	for (Long id : ids) {
 			Provider provider = providerService.findProvider(id);

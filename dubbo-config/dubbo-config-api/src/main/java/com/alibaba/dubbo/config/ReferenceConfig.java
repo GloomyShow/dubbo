@@ -296,7 +296,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             }
         }
         //attributes通过系统context进行存储.
-        StaticContext.getSystemContext().putAll(attributes);
+        StaticContext.getSystemContext().putAll(attributes);//全局存储
         ref = createProxy(map);
     }
     
@@ -335,7 +335,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
     
 	@SuppressWarnings({ "unchecked", "rawtypes", "deprecation" })
 	private T createProxy(Map<String, String> map) {
-		URL tmpUrl = new URL("temp", "localhost", 0, map);
+		URL tmpUrl = new URL("temp", "localhost", 0, map);//
 		final boolean isJvmRefer;
         if (isInjvm() == null) {
             if (url != null && url.length() > 0) { //指定URL的情况下，不做本地引用
@@ -373,11 +373,11 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
                     }
                 }
             } else { // 通过注册中心配置拼装URL
-            	List<URL> us = loadRegistries(false);
-            	if (us != null && us.size() > 0) {
+            	List<URL> us = loadRegistries(false);//加载没有生产者的注册地址
+            	if (us != null && us.size() > 0) {//注册地址非空
                 	for (URL u : us) {
-                	    URL monitorUrl = loadMonitor(u);
-                        if (monitorUrl != null) {
+                	    URL monitorUrl = loadMonitor(u);//通过注册地址，装载监控器
+                        if (monitorUrl != null) {//存在监控器，加入map中
                             map.put(Constants.MONITOR_KEY, URL.encode(monitorUrl.toFullString()));
                         }
                 	    urls.add(u.addParameterAndEncoded(Constants.REFER_KEY, StringUtils.toQueryString(map)));
@@ -389,7 +389,7 @@ public class ReferenceConfig<T> extends AbstractReferenceConfig {
             }
 
             if (urls.size() == 1) {
-                invoker = refprotocol.refer(interfaceClass, urls.get(0));
+                invoker = refprotocol.refer(interfaceClass, urls.get(0));//引用远程服务
             } else {
                 List<Invoker<?>> invokers = new ArrayList<Invoker<?>>();
                 URL registryURL = null;

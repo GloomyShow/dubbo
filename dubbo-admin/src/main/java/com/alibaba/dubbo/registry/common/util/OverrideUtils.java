@@ -29,7 +29,13 @@ import com.alibaba.dubbo.registry.common.domain.Weight;
  * @author tony.chenl
  */
 public class OverrideUtils {
+    /**
+     *
+     * @param overrides
+     * @return
+     */
    public static List<Weight> overridesToWeights(List<Override> overrides){
+
        List<Weight> weights = new ArrayList<Weight>();
        if(overrides == null){
            return weights;

@@ -55,6 +55,7 @@
 					<renderTemplate />
 				</when>
 				<otherwise>
+					<!-- 将控制交还给servlet engine。 -->
 					<exit />
 				</otherwise>
 			</choose>

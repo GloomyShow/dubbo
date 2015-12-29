@@ -93,7 +93,7 @@ public abstract class AbstractRegistry implements Registry {
         syncSaveFile = url.getParameter(Constants.REGISTRY_FILESAVE_SYNC_KEY, false);
         String filename = url.getParameter(Constants.FILE_KEY, System.getProperty("user.home") + "/.dubbo/dubbo-registry-" + url.getHost() + ".cache");
         File file = null;
-        if (ConfigUtils.isNotEmpty(filename)) {
+        if (ConfigUtils.isNotEmpty(filename)) {//如果文件名不为空，创建文件
             file = new File(filename);
             if(! file.exists() && file.getParentFile() != null && ! file.getParentFile().exists()){
                 if(! file.getParentFile().mkdirs()){

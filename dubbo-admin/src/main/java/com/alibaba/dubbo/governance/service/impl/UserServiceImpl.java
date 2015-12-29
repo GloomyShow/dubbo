@@ -31,18 +31,18 @@ public class UserServiceImpl extends AbstractService implements UserService {
 
 	private String rootPassword;
 
-	public void setRootPassword(String password) {
+	public void setRootPassword(String password) {//获取配置文件dubbo-admin.xml中配置的root密码
 		this.rootPassword = (password == null ? "" : password);
 	}
 
 	private String guestPassword;
 
-	public void setGuestPassword(String password) {
+	public void setGuestPassword(String password) {//获取配置文件dubbo-admin.xml中配置的root密码
 		this.guestPassword = (password == null ? "" : password);
 	}
 
     public User findUser(String username) {
-    	if ("guest".equals(username)) {
+    	if ("guest".equals(username)) {//
     		User user = new User();
             user.setUsername(username);
             user.setPassword(Coder.encodeMd5(username + ":" + User.REALM + ":" + guestPassword));

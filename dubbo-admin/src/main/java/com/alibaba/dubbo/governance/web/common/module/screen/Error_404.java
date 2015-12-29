@@ -20,7 +20,12 @@ import java.util.Map;
 import com.alibaba.dubbo.governance.web.common.pulltool.RootContextPath;
 
 public class Error_404 {
-	
+
+	/**
+	 * execute 方法就是专门用来请求对应请求的
+	 * @param context
+	 * @throws Throwable
+     */
 	public void execute(Map<String, Object> context) throws Throwable {
 		String contextPath = (String) context.get("request.contextPath");
         context.put("rootContextPath", new RootContextPath(contextPath));

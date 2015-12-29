@@ -76,7 +76,7 @@ public class Weights extends Restful {
             context.put("service", service);
             context.put("methods", CollectionUtils.sort(providerService.findMethodsByService(service)));
         } else {
-            List<String> serviceList = Tool.sortSimpleName(providerService.findServices());
+            List<String> serviceList = Tool.sortSimpleName(providerService.findServices());//增加服务列表
             context.put("serviceList", serviceList);
         }
         if(context.get("input") != null) context.put("input", context.get("input"));

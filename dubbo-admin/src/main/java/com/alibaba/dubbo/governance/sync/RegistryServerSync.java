@@ -67,7 +67,7 @@ public class RegistryServerSync implements InitializingBean, DisposableBean, Not
         return registryCache;
     }
     
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() throws Exception {//注册注册中心配置后启动
         logger.info("Init Dubbo Admin Sync Cache...");
         registryService.subscribe(SUBSCRIBE, this);
     }
@@ -124,7 +124,7 @@ public class RegistryServerSync implements InitializingBean, DisposableBean, Not
             ConcurrentMap<String, Map<Long, URL>> services = registryCache.get(category);
             if(services == null) {
                 services = new ConcurrentHashMap<String, Map<Long,URL>>();
-                registryCache.put(category, services);
+                registryCache.put(category, services);//加入注册信息
             }
             services.putAll(categoryEntry.getValue());
         }

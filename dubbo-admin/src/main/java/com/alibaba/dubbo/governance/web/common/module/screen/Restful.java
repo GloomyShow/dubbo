@@ -49,12 +49,12 @@ public abstract class Restful {
 	protected String currentRegistry = null;
     
     public void execute(Map<String, Object> context) throws Throwable {
-        if(context.get(WebConstants.CURRENT_USER_KEY)!=null){
+        if(context.get(WebConstants.CURRENT_USER_KEY)!=null){ //获取当前登录用户
         	User user = (User) context.get(WebConstants.CURRENT_USER_KEY);
         	currentUser = user;
         	operator = user.getUsername();
-        	role = user.getRole();
-        	context.put(WebConstants.CURRENT_USER_KEY, user);
+        	role = user.getRole(); //获取用户角色
+        	context.put(WebConstants.CURRENT_USER_KEY, user);//把当前用户放入到context中
         }
         operatorAddress = (String)context.get("request.remoteHost");
         context.put("operator", operator);
@@ -62,15 +62,15 @@ public abstract class Restful {
     	
         context.put("currentRegistry", currentRegistry);
         
-        String httpMethod = (String) context.get("request.method");
-        String method = (String) context.get("_method");
+        String httpMethod = (String) context.get("request.method");//方法方式method/Get
+        String method = (String) context.get("_method");//方法名
         String contextPath = (String) context.get("request.contextPath");
         context.put("rootContextPath", new RootContextPath(contextPath));
         
         // 分析Method
-        if (method == null || method.length() == 0) {
+        if (method == null || method.length() == 0) {//method为空或不存在
             String id = (String) context.get("id");
-            if(id == null || id.length() == 0) {
+            if(id == null || id.length() == 0) {//method，id为空，设置为index
                 method = "index";
             }
             else {
@@ -78,7 +78,7 @@ public abstract class Restful {
             }
         }
         if ("index".equals(method)) {
-            if("post".equalsIgnoreCase(httpMethod)) {
+            if("post".equalsIgnoreCase(httpMethod)) {//post请求，方法默认为create
                 method = "create";
             }
         } else if ("show".equals(method)) {
@@ -162,7 +162,7 @@ public abstract class Restful {
                     r = m.invoke(this, new Object[] {value, context});
                 }
             }
-            if (m.getReturnType() == boolean.class || m.getReturnType() == Boolean.class) {
+            if (m.getReturnType() == boolean.class || m.getReturnType() == Boolean.class) {//返回类型为boolean
                 context.put("rundata.layout", "redirect");
                 context.put("rundata.target", "redirect");
                 context.put("success", r == null || ((Boolean) r).booleanValue());

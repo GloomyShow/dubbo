@@ -201,7 +201,7 @@ public abstract class AbstractInterfaceConfig extends AbstractMethodConfig {
         return registryList;
     }
     
-    protected URL loadMonitor(URL registryURL) {
+    protected URL loadMonitor(URL registryURL) {//添加监控
         if (monitor == null) {
             String monitorAddress = ConfigUtils.getProperty("dubbo.monitor.address");
             String monitorProtocol = ConfigUtils.getProperty("dubbo.monitor.protocol");

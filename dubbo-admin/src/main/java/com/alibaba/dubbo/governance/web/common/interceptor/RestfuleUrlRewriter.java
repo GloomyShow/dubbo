@@ -85,7 +85,7 @@ public class RestfuleUrlRewriter implements RewriteSubstitutionHandler {
 
         Map<String, String> param = new HashMap<String, String>();
 
-        // 处理分页
+        // 处理分页`
         if (PAGES_PATTERN.matcher(path).matches()) {
             String[] page_path = PAGES_SPLIT_PATTERN.split(path);
             path = page_path[0];
