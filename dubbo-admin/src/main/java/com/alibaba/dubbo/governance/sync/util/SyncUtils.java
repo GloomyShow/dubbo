@@ -38,6 +38,11 @@ public class SyncUtils {
     
     public static final String ID_FILTER_KEY = ".id";
 
+    /**
+     * url 转换为 provider
+     * @param pair Long为id,
+     * @return
+     */
     public static Provider url2Provider(Pair<Long, URL> pair) {
     	if (pair == null) {
     		return null;
@@ -64,7 +69,12 @@ public class SyncUtils {
 
         return p;
     }
-    
+
+    /**
+     * 将url Map转换为provider List
+     * @param ps
+     * @return
+     */
     public static List<Provider> url2ProviderList(Map<Long, URL> ps) {
         List<Provider> ret = new ArrayList<Provider>();
         for(Map.Entry<Long, URL> entry : ps.entrySet()) {
@@ -174,14 +184,21 @@ public class SyncUtils {
 
         return o;
     }
-    
+
+    /**
+     * 从容器中获取过滤信息
+     * @param urls 父容器
+     * @param filter
+     * @param <SM>
+     * @return
+     */
     // Map<category, Map<servicename, Map<Long, URL>>>
     public static <SM extends Map<String, Map<Long, URL>>> Map<Long, URL> filterFromCategory(Map<String, SM> urls, Map<String, String> filter) {
-        String c = (String) filter.get(Constants.CATEGORY_KEY);
+        String c = (String) filter.get(Constants.CATEGORY_KEY);//获取需要过滤的容器名称
         if(c==null) throw new IllegalArgumentException("no category");
         
-        filter.remove(Constants.CATEGORY_KEY);
-        return filterFromService(urls.get(c), filter);
+        filter.remove(Constants.CATEGORY_KEY);//过滤链中删除catagory容器KEY
+        return filterFromService(urls.get(c), filter);//获取父容器中所有包含c值的url
     }
     
     public static List<com.alibaba.dubbo.registry.common.domain.Override> url2OverrideList(Map<Long, URL> cs) {
@@ -192,27 +209,38 @@ public class SyncUtils {
         }
         return list;
     }
-    
-    
+
+    /**
+     * 过滤服务
+     * @param urls 服务url容器
+     * @param filter 过滤链
+     * @return
+     */
     // Map<servicename, Map<Long, URL>>
     public static Map<Long, URL> filterFromService(Map<String, Map<Long, URL>> urls, Map<String, String> filter) {
         Map<Long, URL> ret = new HashMap<Long, URL>();
         if(urls == null) return ret;
         
-        String s = (String) filter.remove(SERVICE_FILTER_KEY);
-        if(s == null) {
-            for(Map.Entry<String, Map<Long, URL>> entry : urls.entrySet()) {
+        String s = (String) filter.remove(SERVICE_FILTER_KEY);//服务过滤链，如果filter中包含service相关key，则删除并返回，如果没有则返回null。
+        if(s == null) {//如果没有定义服务过滤链KEY值
+            for(Map.Entry<String, Map<Long, URL>> entry : urls.entrySet()) {//获取所有url entry
                 filterFromUrls(entry.getValue(), ret, filter);
             }
         }
-        else {
-            Map<Long, URL> map = urls.get(s);
+        else {//存在service相关过滤链
+            Map<Long, URL> map = urls.get(s);//获得父容器中所有含有该service的url
             filterFromUrls(map, ret, filter);
         }
         
         return ret;
     }
 
+    /**
+     * 过滤URL
+     * @param from 从from 中取过滤 ，from为父容器
+     * @param to 过滤到的结果放到to 中
+     * @param filter 过滤链
+     */
     // Map<Long, URL>
     static void filterFromUrls(Map<Long, URL> from, Map<Long, URL> to, Map<String, String> filter) {
         if(from == null || from.isEmpty()) return;
@@ -225,8 +253,8 @@ public class SyncUtils {
                 String key = e.getKey();
                 String value = e.getValue();
                 
-                if(ADDRESS_FILTER_KEY.equals(key)) {
-                    if(!value.equals(url.getAddress())) {
+                if(ADDRESS_FILTER_KEY.equals(key)) {//包含地址过滤关键词
+                    if(!value.equals(url.getAddress())) {// key value值不相等，直接取url中地址
                         match = false;
                         break;
                     }
@@ -239,7 +267,7 @@ public class SyncUtils {
                 }
             }
             
-            if(match) {
+            if(match) {//如果key ，value相匹配，放入to中
                 to.put(entry.getKey(), url);
             }
         }

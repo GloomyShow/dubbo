@@ -89,13 +89,13 @@ public class Providers extends Restful {
         
         List<Provider> providers = null;
         
-        // service
+        // 通过service 去查找
         if (service != null && service.length() > 0) {
             providers = providerService.findByService(service);
             
             value = service + separators + request.getRequestURI();
         }
-        // address
+        // 通过 address
         else if (address != null && address.length() > 0) {
             providers = providerService.findByAddress(address);
             

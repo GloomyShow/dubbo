@@ -307,13 +307,25 @@ public class ProviderServiceImpl extends AbstractService implements ProviderServ
         return ret;
     }
 
+    /**
+     * 通过服务查找到提供者
+     * @param serviceName
+     * @return
+     */
     public List<Provider> findByService(String serviceName) {
         return SyncUtils.url2ProviderList(findProviderUrlByService(serviceName));
     }
-    
+
+    /**
+     * 通过服务查找到提供者URL
+     * @param service
+     * @return
+     */
     private Map<Long, URL> findProviderUrlByService(String service) {
         Map<String, String> filter = new HashMap<String, String>();
+        //category ---> providers
         filter.put(Constants.CATEGORY_KEY, Constants.PROVIDERS_CATEGORY);
+        //.service ---> service
         filter.put(SyncUtils.SERVICE_FILTER_KEY, service);
         
         return SyncUtils.filterFromCategory(getRegistryCache(), filter);
@@ -328,7 +340,12 @@ public class ProviderServiceImpl extends AbstractService implements ProviderServ
         filter.put(Constants.CATEGORY_KEY, Constants.PROVIDERS_CATEGORY);
         return SyncUtils.filterFromCategory(getRegistryCache(), filter);
     }
-    
+
+    /**
+     * 通过地址查找provider
+     * @param providerAddress
+     * @return
+     */
     public List<Provider> findByAddress(String providerAddress) {
         return SyncUtils.url2ProviderList(findProviderUrlByAddress(providerAddress));
     }

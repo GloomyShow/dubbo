@@ -111,7 +111,12 @@ public class Consumers extends Restful {
     	context.put("routes", consumer.getRoutes());
     	context.put("overrides", consumer.getOverrides());
     }
-    
+
+    /**
+     * 编辑
+     * @param id
+     * @param context
+     */
     public void edit(Long id, Map<String, Object> context) {
     	show(id, context);
     }
@@ -167,6 +172,11 @@ public class Consumers extends Restful {
     	show(id, context);
     }
 
+    /**
+     * 已通知
+     * @param id
+     * @param context
+     */
     public void notified(Long id, Map<String, Object> context) {
     	show(id, context);
     }
@@ -174,15 +184,36 @@ public class Consumers extends Restful {
     public void overrided(Long id, Map<String, Object> context) {
     	show(id, context);
     }
-    
+
+    /**
+     * 批量屏蔽
+     * @param ids
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public boolean shield(Long[] ids, Map<String, Object> context) throws Exception {
     	return mock(ids, context, "force:return null");
     }
 
+    /**
+     * 批量容错
+     * @param ids
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public boolean tolerant(Long[] ids, Map<String, Object> context) throws Exception {
     	return mock(ids, context, "fail:return null");
     }
 
+    /**
+     * 批量恢复
+     * @param ids
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public boolean recover(Long[] ids, Map<String, Object> context) throws Exception {
     	return mock(ids, context, "");
     }
@@ -299,18 +330,46 @@ public class Consumers extends Restful {
         return true;
     }
 
+    /**
+     * 批量允许
+     * @param ids
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public boolean allow(Long[] ids, Map<String, Object> context) throws Exception {
     	return access(ids, context, true, false);
     }
-    
+
+    /**
+     * 批量禁止
+     * @param ids
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public boolean forbid(Long[] ids, Map<String, Object> context) throws Exception {
     	return access(ids, context, false, false);
     }
 
+    /**
+     * 只允许
+     * @param ids
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public boolean onlyallow(Long[] ids, Map<String, Object> context) throws Exception {
     	return access(ids, context, true, true);
     }
 
+    /**
+     * 只禁止
+     * @param ids
+     * @param context
+     * @return
+     * @throws Exception
+     */
     public boolean onlyforbid(Long[] ids, Map<String, Object> context) throws Exception {
     	return access(ids, context, false, true);
     }

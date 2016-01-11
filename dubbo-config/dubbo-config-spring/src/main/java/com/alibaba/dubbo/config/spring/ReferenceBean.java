@@ -75,7 +75,7 @@ public class ReferenceBean<T> extends ReferenceConfig<T> implements FactoryBean,
     }
 
     @SuppressWarnings({ "unchecked"})
-    public void afterPropertiesSet() throws Exception {
+    public void afterPropertiesSet() throws Exception {//加载配置文件中的dubbo配置
         if (getConsumer() == null) {
             Map<String, ConsumerConfig> consumerConfigMap = applicationContext == null ? null  : BeanFactoryUtils.beansOfTypeIncludingAncestors(applicationContext, ConsumerConfig.class, false, false);
             if (consumerConfigMap != null && consumerConfigMap.size() > 0) {

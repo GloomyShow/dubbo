@@ -285,15 +285,28 @@ public final class URL implements Serializable {
 	    }
 	    return ip;
 	}
-	
+
+    /**
+     * 获取端口号
+     * @return
+     */
 	public int getPort() {
 		return port;
 	}
 
+    /**
+     * 默认端口号
+     * @param defaultPort
+     * @return
+     */
     public int getPort(int defaultPort) {
         return port <= 0 ? defaultPort : port;
     }
 
+    /**
+     * 获取地址，主机+端口号
+     * @return
+     */
 	public String getAddress() {
 	    return port <= 0 ? host : host + ":" + port;
 	}
@@ -301,7 +314,12 @@ public final class URL implements Serializable {
 	public String getBackupAddress() {
 		return getBackupAddress(0);
 	}
-	
+
+    /**
+     * 获取备用地址
+     * @param defaultPort
+     * @return
+     */
 	public String getBackupAddress(int defaultPort) {
 		StringBuilder address = new StringBuilder(appendDefaultPort(getAddress(), defaultPort));
         String[] backups = getParameter(Constants.BACKUP_KEY, new String[0]);
@@ -313,7 +331,11 @@ public final class URL implements Serializable {
         }
         return address.toString();
 	}
-	
+
+    /**
+     * 获取备用url
+     * @return
+     */
 	public List<URL> getBackupUrls() {
 		List<URL> urls = new ArrayList<URL>();
 		urls.add(this);
@@ -399,14 +421,25 @@ public final class URL implements Serializable {
         return decode(getParameter(key, defaultValue));
     }
 
+    /**
+     * 获取参数
+     * @param key
+     * @return
+     */
     public String getParameter(String key) {
         String value = parameters.get(key);
-        if (value == null || value.length() == 0) {
+        if (value == null || value.length() == 0) {//如果获取不到值，取默认情况
             value = parameters.get(Constants.DEFAULT_KEY_PREFIX + key);
         }
         return value;
     }
 
+    /**
+     * 获取key的value值，没有则为默认值
+     * @param key
+     * @param defaultValue 默认值
+     * @return
+     */
     public String getParameter(String key, String defaultValue) {
         String value = getParameter(key);
         if (value == null || value.length() == 0) {
@@ -420,7 +453,7 @@ public final class URL implements Serializable {
         if (value == null || value.length() == 0) {
             return defaultValue;
         }
-        return Constants.COMMA_SPLIT_PATTERN.split(value);
+        return Constants.COMMA_SPLIT_PATTERN.split(value);//以逗号分隔值
     }
     
     private Map<String, Number> getNumbers() {
@@ -902,7 +935,8 @@ public final class URL implements Serializable {
         if(value == null || value.length() == 0) return this;
         return addParameter(key, String.valueOf(value));
     }
-    
+
+
     public URL addParameter(String key, String value) {
         if (key == null || key.length() == 0
                 || value == null || value.length() == 0) {
@@ -917,7 +951,13 @@ public final class URL implements Serializable {
         map.put(key, value);
         return new URL(protocol, username, password, host, port, path, map);
     }
-    
+
+    /**
+     * 获取不存在的参数
+     * @param key
+     * @param value
+     * @return
+     */
     public URL addParameterIfAbsent(String key, String value) {
         if (key == null || key.length() == 0
                 || value == null || value.length() == 0) {
@@ -1099,7 +1139,13 @@ public final class URL implements Serializable {
 		buildParameters(buf, false, parameters);
 		return buf.toString();
 	}
-	
+
+    /**
+     * 拼接参数
+     * @param buf
+     * @param concat
+     * @param parameters
+     */
 	private void buildParameters(StringBuilder buf, boolean concat, String[] parameters) {
 	    if (getParameters() !=null && getParameters().size() > 0) {
             List<String> includes = (parameters == null || parameters.length == 0 ? null : Arrays.asList(parameters));
@@ -1127,6 +1173,15 @@ public final class URL implements Serializable {
 		return buildString(appendUser, appendParameter, false, false, parameters);
 	}
 
+    /**
+     * 拼接字符串
+     * @param appendUser
+     * @param appendParameter
+     * @param useIP
+     * @param useService
+     * @param parameters
+     * @return
+     */
 	private String buildString(boolean appendUser, boolean appendParameter, boolean useIP, boolean useService, String... parameters) {
 		StringBuilder buf = new StringBuilder();
 		if (protocol != null && protocol.length() > 0) {
